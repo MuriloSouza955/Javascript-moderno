@@ -1,6 +1,6 @@
 /*
-Deep freeze
-Nesta aula, vamos ver como implementar o conceito de Deep Freeze em JavaScript, que consiste em congelar de forma profunda um objeto, percorrendo recursivamente cada propriedade. Vamos aprender como criar uma função recursiva para congelar todas as propriedades de um objeto, garantindo um congelamento profundo.
+Manipulando objetos imutáveis
+Nesta aula, aprenderemos a manipular objetos utilizando o princípio da imutabilidade. Em vez de modificar o objeto original diretamente, criamos um novo objeto com as alterações desejadas. Utilizamos o spread para preservar as propriedades existentes e modificar apenas as desejadas. Também veremos como adicionar novas propriedades e remover propriedades existentes usando o operador de desestruturação. Assim, conseguimos manipular objetos sem modificar o original, mantendo-o intacto.
 */
 
 const book = {
@@ -12,21 +12,23 @@ const book = {
     },
 }
 
-function deepFreeze(obj) {
-    const proops  = Reflect.ownKeys(obj);
-
-    for (const prop of proops) {
-        const value = obj[prop];
-        if(value  && typeof value === "object" || typeof value === "function"){
-            deepFreeze(value)
-        }
-    }
-    //Retorna o objeto congelado
-    return Object.freeze(obj);
+const updatedBook = {
+    ...book,
+    category: "JavaScript",
+    author: {
+        ...book.author,
+        name: "Murilo Souza"
+    },
+    type: "ebook"
 }
 
-deepFreeze(book);
-
-book.author.name = "Murilo Souza";  //Não vai funcionar pois o objeto está congelado
-
+//original, fica intacto
 console.log(book);
+
+//novo objeto, com as alterações
+console.log(updatedBook);
+
+// Utilizando operador de desestruturação(rest operator) para remover propriedades.
+
+const { category, ...bookWithoutCategory } = book
+console.log(bookWithoutCategory);
